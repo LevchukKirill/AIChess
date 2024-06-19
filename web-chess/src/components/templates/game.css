@@ -1,0 +1,141 @@
+.main {
+  display: flex;
+  margin-top: 1rem;
+  justify-content: space-between;
+}
+.users {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+}
+.user__top {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 1rem 2rem 1rem;
+  background-color: blueviolet;
+  width: 25rem;
+  height: 10rem;
+  border-width: 0.2rem;
+  border-color: black;
+  justify-content: space-between;
+}
+.moves {
+  background-color: blueviolet;
+  margin: auto;
+  padding: auto;
+  width: 25rem;
+  height: 30rem;
+  border-width: 0.2rem;
+  border-bottom-width: 0rem;
+  border-top-width: 0rem;
+  border-color: black;
+  justify-content: space-between;
+}
+.user__bottom {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 1rem 2rem 1rem;
+  background-color: blueviolet;
+  width: 25rem;
+  height: 10rem;
+  border-width: 0.2rem;
+  border-color: black;
+  justify-content: space-between;
+}
+.user__icon {
+  display: flex;
+  width: 3rem;
+  height: 3rem;
+  margin-left: 1rem;
+  justify-content: center;
+  border-width: 0.2rem;
+  border-radius: 3rem;
+  border-color: black;
+  background-color: azure;
+}
+.user__icon__mini {
+  display: flex;
+  width: 3rem;
+  height: 3rem;
+  margin-left: 0.2rem;
+  justify-content: center;
+  border-width: 0.2rem;
+  border-radius: 3rem;
+  border-color: black;
+  background-color: azure;
+  z-index: 1;
+}
+.username {
+  display: flex;
+  background-color: rgb(229, 239, 248);
+  width: 15rem;
+  border-radius: 1.5rem;
+  margin: auto;
+  margin-right: 1rem;
+  align-items: center;
+  justify-content: center;
+}
+.rating {
+  display: flex;
+  margin-right: 1rem;
+  margin-left: 1rem;
+}
+.figures {
+  border-color: black;
+  border-width: 0.15rem;
+  background-color: cadetblue;
+  width: 15rem;
+  margin: auto;
+  margin-right: 1rem;
+  align-items: center;
+  justify-content: center;
+}
+.board {
+  display: flex;
+  background-color: cadetblue;
+  margin: auto;
+  width: 50rem;
+  height: 50rem;
+  border-width: 0.2rem;
+  border-color: black;
+}
+.chat {
+  display: flex;
+  flex-direction: column;
+  background-color: burlywood;
+  margin: auto;
+  width: 20%;
+  height: 50rem;
+  width: 25rem;
+  border-width: 0.2rem;
+  border-color: black;
+}
+
+.chat__header {
+  display: flex;
+  background-color: aliceblue;
+  margin: 0 auto auto auto;
+  padding: 0.5rem;
+  padding-left: 3rem;
+  padding-right: 3rem;
+  justify-content: center;
+  border-color: black;
+  border-width: 0.2rem;
+  border-top-width: 0rem;
+  border-bottom-left-radius: 2rem;
+  border-bottom-right-radius: 2rem;
+}
+
+.chat__player__message {
+  background-color: rgb(90, 151, 90);
+  margin: 0.2rem auto 0.2rem -0.7rem;
+  padding: 0 0.2rem 0 0.7rem;
+  border-radius: 0.2rem;
+  border-width: 0.2rem;
+}
+.chat__enemy__message {
+  background-color: rgb(255, 162, 162);
+  margin: 0.2rem 0.2rem 0.2rem auto;
+  border-radius: 0.2rem;
+  border-width: 0.2rem;
+}
