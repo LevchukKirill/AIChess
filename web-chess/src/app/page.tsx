@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Page = () => {
-  return <div></div>;
+  return <div> Основной контент (ИГРА)</div>;
 };
 
 export default Page;

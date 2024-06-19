@@ -1,7 +1,7 @@
 import React from 'react';
 
-const Page = () => {
+const Lessons = () => {
   return <div>Lesson</div>;
 };
 
-export default Page;
+export default Lessons;
