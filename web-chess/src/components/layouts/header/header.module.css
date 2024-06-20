@@ -1,15 +1,17 @@
 .header {
-  /* position: relative; */
+  position: sticky;
+  /* position: fixed; */
   display: flex;
   width: 100%;
   height: 60px;
-  margin: 0 auto;
+  min-height: 60px;
+  /* margin: 0 auto; */
   background: #cccccc;
   color: #fff;
   flex-direction: row;
   justify-content: center;
-  position: sticky;
   top: 0;
+  /* margin-bottom: 1000px; */
   /* align-items: center; */
   /* -webkit-tap-highlight-color: rgba(0, 0, 0, 0); */
 }
@@ -40,7 +42,7 @@
   /* display: inline; */
   /* border: 1px solid black; */
 }
-#nav_container {
+.nav_container {
   /* border: 10px solid black; */
   /* flex-direction: row; */
   position: fixed;
@@ -63,16 +65,28 @@
   color: #222;
   /* padding: 0 1rem; */
 }
-.button {
-  /* border: 1px solid black; */
-  position: relative;
+.menu_button {
+  position: absolute;
+  border: 1px solid black;
   display: flex;
   flex-direction: column;
-  /* justify-content: center; */
-  /* -webkit-appearance: none; */
-  /* -webkit-tap-highlight-color: rgba(255, 255, 255, 1); */
+  top: 10px;
+  left: 25px;
+  width: 50px;
+  height: 40px;
+  touch-action: manipulation;
+  cursor: pointer;
+  pointer-events: auto;
+}
 
-  margin-left: 25px;
+.user_button {
+  position: absolute;
+  right: 25px;
+  top: 10px;
+
+  display: flex;
+  flex-direction: column;
+  /* margin-left: calc(90vw); */
   width: 50px;
   height: 40px;
   touch-action: manipulation;
@@ -81,6 +95,7 @@
 }
 
 .bg {
+  /* z-index: 1; */
   position: absolute;
   top: 60px;
   left: 0;
@@ -94,16 +109,16 @@
   background: #000;
 }
 
-#nav_container:focus-within .bg {
+.nav_container:focus-within .bg {
   visibility: visible;
   opacity: 0.6;
 }
 
-#nav_container:focus-within .button {
+.nav_container:focus-within .button {
   pointer-events: none;
 }
 
-#menu_list {
+.menu_list {
   /* border: 1px solid black; */
   margin-top: 60px;
   padding: 20px;
@@ -112,7 +127,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  height: calc(100% - 104px);
+  height: 100%;
   background: #ececec;
   pointer-events: auto;
   /* -webkit-tap-highlight-color: rgba(0, 0, 0, 0); */
@@ -122,6 +137,26 @@
   contain: paint;
 }
 
-#nav_container:focus-within #menu_list {
+.user {
+  /* border: 1px solid black; */
+  margin-top: 60px;
+  padding: 20px;
+  width: 90%;
+  max-width: 300px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  background: #ececec;
+  pointer-events: auto;
+  /* -webkit-tap-highlight-color: rgba(0, 0, 0, 0); */
+  transform: translateX(+100%);
+  transition: transform 0.3s;
+  will-change: transform;
+  contain: paint;
+}
+
+.nav_container:focus-within .menu_list,
+.nav_container:focus-within .user {
   transform: none;
 }
