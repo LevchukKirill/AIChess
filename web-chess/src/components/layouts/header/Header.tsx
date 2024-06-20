@@ -4,7 +4,8 @@ import styles from './header.module.css';
 const Header = () => {
   return (
     <header className={styles.header}>
-      <nav className={styles.nav}>
+      {/* <div className={styles.container}> */}
+      <nav id='container'>
         <ul>
           <a href=''>
             <li className={styles.nav_li}>Home</li>
@@ -19,6 +20,7 @@ const Header = () => {
           </a>
         </ul>
       </nav>
+      {/* </div> */}
     </header>
   );
 };

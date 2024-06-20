@@ -1,0 +1,9 @@
+.content {
+  /* display: flex; */
+  flex-direction: column;
+  flex-shrink: 1;
+  flex: 1;
+  font: 1em sans-serif;
+  /* color: brown; */
+  /* border: 1px solid black; */
+}

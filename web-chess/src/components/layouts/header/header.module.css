@@ -1,14 +1,24 @@
 .header {
   /* position: relative; */
   display: flex;
-  max-width: 100%;
-  height: 100%;
+  width: 100%;
+  height: 60px;
   margin: 0 auto;
   padding: 1rem 5rem;
   background: #cccccc;
   color: #fff;
   flex-direction: row;
   justify-content: space-between;
+  position: sticky;
+  top: 0;
+  /* align-items: center; */
+  /* -webkit-tap-highlight-color: rgba(0, 0, 0, 0); */
+}
+.container {
+  position: fixed;
+  height: 100vh;
+  width: 100%;
+  pointer-events: none;
 }
 .header_text {
   line-height: 25px;

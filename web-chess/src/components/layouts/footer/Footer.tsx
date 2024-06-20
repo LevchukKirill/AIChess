@@ -1,9 +1,10 @@
 import React from 'react';
+import styles from './footer.module.css';
 
 const Footer = () => {
   return (
-    <footer className='footer'>
-      <div className='container'>Project by NIKITA I KIRILL</div>
+    <footer className={styles.footer}>
+      <div>prod by NikiMon & velikiyurod</div>
     </footer>
   );
 };
