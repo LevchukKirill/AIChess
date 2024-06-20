@@ -1,0 +1,76 @@
+.users {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+}
+.user__top {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 1rem 2rem 1rem;
+  background-color: blueviolet;
+  width: 25rem;
+  height: 10rem;
+  border-width: 0.2rem;
+  border-color: black;
+  justify-content: space-between;
+}
+.moves {
+  background-color: blueviolet;
+  margin: auto;
+  padding: auto;
+  width: 25rem;
+  height: 30rem;
+  border-width: 0.2rem;
+  border-bottom-width: 0rem;
+  border-top-width: 0rem;
+  border-color: black;
+  justify-content: space-between;
+}
+.user__bottom {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 1rem 2rem 1rem;
+  background-color: blueviolet;
+  width: 25rem;
+  height: 10rem;
+  border-width: 0.2rem;
+  border-color: black;
+  justify-content: space-between;
+}
+.user__icon {
+  display: flex;
+  width: 3rem;
+  height: 3rem;
+  margin-left: 1rem;
+  justify-content: center;
+  border-width: 0.2rem;
+  border-radius: 3rem;
+  border-color: black;
+  background-color: azure;
+}
+
+.username {
+  display: flex;
+  background-color: rgb(229, 239, 248);
+  width: 15rem;
+  border-radius: 1.5rem;
+  margin: auto;
+  margin-right: 1rem;
+  align-items: center;
+  justify-content: center;
+}
+.rating {
+  display: flex;
+  margin-right: 1rem;
+  margin-left: 1rem;
+}
+.figures {
+  border-color: black;
+  border-width: 0.15rem;
+  background-color: cadetblue;
+  width: 15rem;
+  margin: auto;
+  margin-right: 1rem;
+  align-items: center;
+  justify-content: center;
+}

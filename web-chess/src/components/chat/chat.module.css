@@ -1,0 +1,74 @@
+.user__icon__mini {
+  display: flex;
+  width: 48px;
+  min-width: 48px;
+  height: 48px;
+  max-width: 48px;
+  min-height: 48px;
+  max-height: 48px;
+  margin-left: 3px;
+  margin-right: 3px;
+  justify-content: center;
+  border-width: 3px;
+  border-radius: 100%;
+  border-color: black;
+  background-color: azure;
+  z-index: 1;
+}
+
+.chat {
+  display: flex;
+  flex-direction: column;
+  background-color: burlywood;
+  margin: auto;
+  width: 20%;
+  height: 50rem;
+  width: 25rem;
+  border-width: 0.2rem;
+  border-color: black;
+}
+
+.chat__header {
+  display: flex;
+  background-color: aliceblue;
+  margin: 0 auto auto auto;
+  padding: 0.5rem;
+  padding-left: 3rem;
+  padding-right: 3rem;
+  justify-content: center;
+  border-color: black;
+  border-width: 0.2rem;
+  border-top-width: 0rem;
+  border-bottom-left-radius: 2rem;
+  border-bottom-right-radius: 2rem;
+}
+
+.player__message {
+  background-color: rgb(90, 151, 90);
+  margin: 7px auto 2px -10px;
+  padding: 0 7px 0 7px;
+  border-radius: 2px;
+  border-width: 2px;
+  flex-wrap: wrap;
+  word-break: break-all;
+}
+.enemy__message {
+  background-color: rgb(255, 162, 162);
+  margin: 7px -10px 2px auto;
+  padding: 0 7px 0px 7px;
+  border-radius: 2px;
+  border-width: 2px;
+  word-break: break-all;
+}
+.chat__box {
+  display: flex;
+  flex-direction: column;
+  padding: 2px;
+}
+.chat__input {
+  border-color: black;
+  border-top-width: 0.2rem;
+  background-color: blue;
+  min-width: 100%;
+  min-height: 10%;
+}

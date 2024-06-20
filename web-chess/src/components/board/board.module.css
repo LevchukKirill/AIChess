@@ -1,0 +1,9 @@
+.board {
+  display: flex;
+  background-color: cadetblue;
+  margin: auto;
+  width: 50rem;
+  height: 50rem;
+  border-width: 0.2rem;
+  border-color: black;
+}
