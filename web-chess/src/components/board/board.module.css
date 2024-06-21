@@ -1,9 +1,28 @@
 .board {
   display: flex;
-  background-color: cadetblue;
+  flex-wrap: wrap;
+  background-color: black;
   margin: auto;
   width: 50rem;
-  height: 50rem;
-  border-width: 0.2rem;
+  aspect-ratio: 1/1;
+  /* height: 50rem; */
+  /* border-width: 0.1rem; */
   border-color: black;
+}
+
+.tile {
+  width: calc(50rem / 8);
+  aspect-ratio: 1/1;
+}
+
+.white {
+  width: calc(50rem / 8);
+  aspect-ratio: 1/1;
+  background-color: wheat;
+}
+
+.black {
+  width: calc(50rem / 8);
+  aspect-ratio: 1/1;
+  background-color: cadetblue;
 }
