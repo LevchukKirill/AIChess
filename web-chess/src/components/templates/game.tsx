@@ -5,9 +5,9 @@ import UsersInfo from '../usersInfo/UsersInfo';
 const Game = () => {
   return (
     <div className={styles.main}>
-      <UsersInfo />
+      {/* <UsersInfo /> */}
       <Board />
-      <Chat />
+      {/* <Chat /> */}
     </div>
   );
 };

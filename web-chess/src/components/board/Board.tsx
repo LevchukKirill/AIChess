@@ -1,80 +1,174 @@
 'use client';
-import React, { useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import styles from './board.module.css';
-import Image from 'next/image';
 import parserFEN from '@/scripts/fenParser';
 
-const verticalAxis = ['1', '2', '3', '4', '5', '6', '7', '8'];
-const horizontalAxis = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
-const startFEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 1 0';
-
-interface Piece {
-  image: String;
-  x: Number;
-  y: Number;
-}
-
-interface Pieces {
+export interface Pieces {
   file: Number;
   rank: Number;
   pieceColor: String;
   pieceType: String;
 }
 
-const pieces: Array<Pieces> = parserFEN(startFEN);
+const verticalAxis = ['1', '2', '3', '4', '5', '6', '7', '8'];
+const horizontalAxis = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+const startFEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 1 0';
+
+// const piecesPos: Array<Pieces> = parserFEN(startFEN);
 
 const Board = () => {
-  // useEffect(() => {
-  // }, []);
+  const [pieces, setPieces] = useState<Pieces[]>(parserFEN(startFEN));
+  const [gridX, setGridX] = useState(0);
+  const [gridY, setGridY] = useState(0);
+  const [activePiece, setActivePiece] = useState<HTMLElement | null>(null);
+  const boardRef = useRef<HTMLDivElement>(null);
+
+  function grabPiece(e: React.MouseEvent) {
+    const board = boardRef.current;
+    const element = e.target as HTMLElement;
+
+    if (board && element.classList.contains(styles.chess_piece)) {
+      const gridX = Math.floor((e.clientX - board.offsetLeft) / 100);
+      const gridY = Math.abs(
+        Math.ceil((e.clientY - board.offsetTop - 800) / 100)
+      );
+      // console.log(e);
+      setGridX(gridX);
+      setGridY(gridY);
+      const x = e.clientX - 50;
+      const y = e.clientY - 50;
+
+      element.style.position = 'absolute';
+      element.style.left = `${x}px`;
+      element.style.top = `${y}px`;
+
+      setActivePiece(element);
+    }
+  }
+
+  function dropPiece(e: React.MouseEvent) {
+    const board = boardRef.current;
+    if (activePiece && board) {
+      const x = Math.floor((e.clientX - board.offsetLeft) / 100);
+      const y = Math.abs(Math.ceil((e.clientY - board.offsetTop - 800) / 100));
+
+      console.log(x, y);
+      setPieces((value) => {
+        const pieces = value.map((p) => {
+          if (Number(p.file) - 1 === gridX && Number(p.rank) - 1 === gridY) {
+            p.file = x + 1;
+            p.rank = y + 1;
+          }
+          return p;
+        });
+
+        return pieces;
+      });
+
+      setActivePiece(null);
+    }
+  }
+
+  function movePiece(e: React.MouseEvent) {
+    const board = boardRef.current;
+    // console.log(board);
+    if (activePiece && board) {
+      const x = e.clientX - 50;
+      const y = e.clientY - 50;
+      const minX = board.offsetLeft - 27;
+      const minY = board.offsetTop - 25;
+      const maxX = board.offsetLeft + board.clientWidth - 73;
+      const maxY = board.offsetTop + board.clientHeight - 82;
+
+      activePiece.style.position = 'absolute';
+
+      if (x < minX) activePiece.style.left = `${minX}px`;
+      else if (x > maxX) activePiece.style.left = `${maxX}px`;
+      else activePiece.style.left = `${x}px`;
+
+      if (y < minY) activePiece.style.top = `${minY}px`;
+      else if (y > maxY) activePiece.style.top = `${maxY}px`;
+      else activePiece.style.top = `${y}px`;
+    }
+  }
 
   let board: object[] = [];
+
   for (let j = verticalAxis.length - 1; j >= 0; j--) {
     for (let i = 0; i < horizontalAxis.length; i++) {
       const numbers = j + i + 2;
       let skipFlag = false;
-      Object.values(pieces).map((piece) => {
-        console.log(i, j);
-        if (numbers % 2 === 0 && piece.file - 1 === i && piece.rank - 1 === j) {
+
+      pieces.map((piece) => {
+        if (
+          numbers % 2 === 0 &&
+          Number(piece.file) - 1 === i &&
+          Number(piece.rank) - 1 === j
+        ) {
+          // console.log(pieces);
+          // setPieces([
+          //   ...pieces,
+          //   {
+          //     file: i,
+          //     rank: j,
+          //     pieceColor: piece.pieceColor,
+          //     pieceType: piece.pieceType,
+          //   },
+          // ]);
           skipFlag = true;
           board.push(
             <div
               key={`[${horizontalAxis[i]},${verticalAxis[j]}]`}
               className={`${styles.tile}, ${styles.black}`}
             >
-              <img
-                src={`assets/images/alpha/${piece.pieceColor}${piece.pieceType}.png`}
+              <div
+                style={{
+                  backgroundImage: `url(assets/images/alpha/${piece.pieceColor}${piece.pieceType}.png)`,
+                }}
                 className={styles.chess_piece}
-                alt='chess_piece'
-              />
+              ></div>
             </div>
           );
         }
-        if (numbers % 2 !== 0 && piece.file - 1 === i && piece.rank - 1 === j) {
+        if (
+          numbers % 2 !== 0 &&
+          Number(piece.file) - 1 === i &&
+          Number(piece.rank) - 1 === j
+        ) {
+          // console.log(i, j);
           skipFlag = true;
-
+          // setPieces([
+          //   ...pieces,
+          //   {
+          //     file: i,
+          //     rank: j,
+          //     pieceColor: piece.pieceColor,
+          //     pieceType: piece.pieceType,
+          //   },
+          // ]);
           board.push(
             <div
               key={`[${horizontalAxis[i]},${verticalAxis[j]}]`}
               className={`${styles.tile}, ${styles.white}`}
             >
-              <img
-                src={`assets/images/alpha/${piece.pieceColor}${piece.pieceType}.png`}
+              <div
+                style={{
+                  backgroundImage: `url(assets/images/alpha/${piece.pieceColor}${piece.pieceType}.png)`,
+                }}
                 className={styles.chess_piece}
-                alt='chess_piece'
-              />
+              ></div>
             </div>
           );
         }
       });
 
-      // Object.values(pieces).map((piece) => {
       if (numbers % 2 === 0 && !skipFlag) {
         board.push(
           <div
             key={`[${horizontalAxis[i]},${verticalAxis[j]}]`}
             className={`${styles.tile}, ${styles.black}`}
           >
-            [{horizontalAxis[i]},{verticalAxis[j]}]
+            {/* [{horizontalAxis[i]},{verticalAxis[j]}] */}
           </div>
         );
       } else if (numbers % 2 !== 0 && !skipFlag) {
@@ -83,16 +177,21 @@ const Board = () => {
             key={`[${horizontalAxis[i]},${verticalAxis[j]}]`}
             className={`${styles.tile}, ${styles.white}`}
           >
-            [{horizontalAxis[i]},{verticalAxis[j]}]
+            {/* [{horizontalAxis[i]},{verticalAxis[j]}] */}
           </div>
         );
       }
-      // return;
-      // });
+      // console.log(pieces);
     }
   }
   return (
-    <div className={styles.board}>
+    <div
+      onMouseMove={(e) => movePiece(e)}
+      onMouseDown={(e) => grabPiece(e)}
+      onMouseUp={(e) => dropPiece(e)}
+      className={styles.board}
+      ref={boardRef}
+    >
       <>{board}</>
     </div>
   );
