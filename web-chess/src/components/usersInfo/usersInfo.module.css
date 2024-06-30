@@ -1,4 +1,4 @@
-.users {
+.main {
   display: flex;
   flex-direction: column;
   margin: auto;
@@ -7,19 +7,20 @@
   display: flex;
   flex-direction: column;
   padding: 2rem 1rem 2rem 1rem;
-  background-color: blueviolet;
+  background-color: rgb(255, 161, 161);
   width: 25rem;
   height: 10rem;
   border-width: 0.2rem;
   border-color: black;
   justify-content: space-between;
+  border-radius: 2.5rem;
 }
 .moves {
-  background-color: blueviolet;
+  background-color: rgb(255, 255, 255);
   margin: auto;
   padding: auto;
   width: 25rem;
-  height: 30rem;
+  height: 15rem;
   border-width: 0.2rem;
   border-bottom-width: 0rem;
   border-top-width: 0rem;
@@ -30,17 +31,18 @@
   display: flex;
   flex-direction: column;
   padding: 2rem 1rem 2rem 1rem;
-  background-color: blueviolet;
+  background-color: rgb(161, 255, 189);
   width: 25rem;
   height: 10rem;
   border-width: 0.2rem;
   border-color: black;
   justify-content: space-between;
+  border-radius: 2.5rem;
 }
 .user__icon {
   display: flex;
-  width: 3rem;
-  height: 3rem;
+  width: 48px;
+  height: 48px;
   margin-left: 1rem;
   justify-content: center;
   border-width: 0.2rem;
@@ -61,8 +63,14 @@
 }
 .rating {
   display: flex;
-  margin-right: 1rem;
-  margin-left: 1rem;
+  background-color: rgb(44, 44, 44);
+  border-radius: 1.5rem;
+  margin-right: 0.5rem;
+  margin-left: 0.5rem;
+  color: aliceblue;
+  padding: 4px;
+  min-width: 70px;
+  justify-content: center;
 }
 .figures {
   border-color: black;
