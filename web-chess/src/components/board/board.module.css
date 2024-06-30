@@ -11,18 +11,28 @@
 }
 
 .tile {
+  /* align-content: center; */
   width: calc(50rem / 8);
   aspect-ratio: 1/1;
 }
 
 .white {
+  display: flex;
   width: calc(50rem / 8);
   aspect-ratio: 1/1;
   background-color: wheat;
 }
 
 .black {
+  display: flex;
   width: calc(50rem / 8);
   aspect-ratio: 1/1;
   background-color: cadetblue;
+}
+
+.chess_piece {
+  align-self: center;
+  margin: auto;
+  width: 70px;
+  height: 70px;
 }
