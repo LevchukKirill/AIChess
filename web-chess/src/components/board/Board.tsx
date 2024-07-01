@@ -2,6 +2,7 @@
 import React, { useRef, useState } from 'react';
 import styles from './board.module.css';
 import parserFEN from '@/scripts/fenParser';
+import Rules from '@/scripts/rules';
 
 export interface Pieces {
   file: Number;
@@ -13,6 +14,7 @@ export interface Pieces {
 const verticalAxis = ['1', '2', '3', '4', '5', '6', '7', '8'];
 const horizontalAxis = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 const startFEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 1 0';
+// const startFEN = '8/8/8/7r/6Pp/8/8/5k1K b - g3 0 1';
 
 // const piecesPos: Array<Pieces> = parserFEN(startFEN);
 
@@ -22,6 +24,7 @@ const Board = () => {
   const [gridY, setGridY] = useState(0);
   const [activePiece, setActivePiece] = useState<HTMLElement | null>(null);
   const boardRef = useRef<HTMLDivElement>(null);
+  const rules = new Rules();
 
   function grabPiece(e: React.MouseEvent) {
     const board = boardRef.current;
@@ -52,18 +55,95 @@ const Board = () => {
       const x = Math.floor((e.clientX - board.offsetLeft) / 100);
       const y = Math.abs(Math.ceil((e.clientY - board.offsetTop - 800) / 100));
 
-      console.log(x, y);
-      setPieces((value) => {
-        const pieces = value.map((p) => {
-          if (Number(p.file) - 1 === gridX && Number(p.rank) - 1 === gridY) {
-            p.file = x + 1;
-            p.rank = y + 1;
-          }
-          return p;
-        });
+      const currentPiece = pieces.find(
+        (p) => Number(p.file) - 1 === gridX && Number(p.rank) - 1 === gridY
+      );
+      const attackedPiece = pieces.find(
+        (p) => Number(p.file) - 1 === x && Number(p.rank) - 1 === y
+      );
 
-        return pieces;
-      });
+      if (currentPiece) {
+        const validMove = rules.isValidMove(
+          gridX,
+          gridY,
+          x,
+          y,
+          currentPiece.pieceType,
+          currentPiece.pieceColor,
+          pieces
+        );
+
+        if (validMove) {
+          const updatedPieces = pieces.reduce((results, piece) => {
+            if (
+              Number(piece.file) - 1 === gridX &&
+              Number(piece.rank) - 1 === gridY
+            ) {
+              piece.file = x + 1;
+              piece.rank = y + 1;
+              results.push(piece);
+            } else if (!(piece.file === x + 1 && piece.rank === y + 1)) {
+              results.push(piece);
+            }
+
+            return results;
+          }, [] as Pieces[]);
+
+          setPieces(updatedPieces);
+
+          // setPieces((value) => {
+          //   const pieces = value.reduce((results, piece) => {
+          //     if (
+          //       piece.file === currentPiece.file &&
+          //       piece.rank === currentPiece.rank
+          //     ) {
+          //       piece.file = x + 1;
+          //       piece.rank = y + 1;
+          //       results.push(piece);
+          //     } else if (!(piece.file === x + 1 && piece.rank === y + 1)) {
+          //       results.push(piece);
+          //     }
+
+          //     return results;
+          //   }, [] as Pieces[]);
+
+          //   return pieces;
+          // });
+        } else {
+          activePiece.style.position = 'relative';
+          activePiece.style.removeProperty('top');
+          activePiece.style.removeProperty('left');
+        }
+      }
+      console.log(currentPiece, attackedPiece);
+      //updates position of pieces
+      // setPieces((value) => {
+      //   const pieces = value.map((p) => {
+      //     if (Number(p.file) - 1 === gridX && Number(p.rank) - 1 === gridY) {
+      //       const validMove = rules.isValidMove(
+      //         gridX,
+      //         gridY,
+      //         x,
+      //         y,
+      //         p.pieceType,
+      //         p.pieceColor,
+      //         value
+      //       );
+
+      //       if (validMove) {
+      //         p.file = x + 1;
+      //         p.rank = y + 1;
+      //       } else {
+      //         activePiece.style.position = 'relative';
+      //         activePiece.style.removeProperty('top');
+      //         activePiece.style.removeProperty('left');
+      //       }
+      //     }
+      //     return p;
+      //   });
+
+      //   return pieces;
+      // });
 
       setActivePiece(null);
     }
