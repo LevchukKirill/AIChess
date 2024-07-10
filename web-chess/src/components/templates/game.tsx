@@ -5,7 +5,7 @@ import UsersInfo from "../usersInfo/UsersInfo";
 const Game = (props: any) => {
   return (
     <div className={styles.main}>
-      <UsersInfo />
+      {/* <UsersInfo /> */}
       <Board />
       <Chat messages={props.messages} addMessage={props.addMessage} />
     </div>

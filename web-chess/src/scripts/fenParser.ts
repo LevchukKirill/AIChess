@@ -5,7 +5,7 @@ interface Piece {
   pieceType: String;
 }
 
-function parserFEN(fen: string) {
+export default function parserFEN(fen: string) {
   let Pieces: Piece[] = [];
   //'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 1 0' -- start pos
   const fenBoard = fen.split(' ')[0];
@@ -37,5 +37,3 @@ function parserFEN(fen: string) {
   }
   return Pieces;
 }
-
-export default parserFEN;

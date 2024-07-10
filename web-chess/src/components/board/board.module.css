@@ -31,8 +31,16 @@
 }
 
 .chess_piece {
-  align-self: center;
-  margin: auto;
-  width: 70px;
-  height: 70px;
+  width: 100px;
+  height: 100px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 80px;
+}
+
+.chess_piece:hover {
+  cursor: grab;
+}
+.chess_piece:active {
+  cursor: grabbing;
 }
