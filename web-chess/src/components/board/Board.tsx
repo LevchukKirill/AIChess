@@ -9,6 +9,7 @@ export interface Pieces {
   rank: number;
   pieceColor: string;
   pieceType: string;
+  enPassant: string;
 }
 
 const verticalAxis = ['1', '2', '3', '4', '5', '6', '7', '8'];
@@ -21,6 +22,7 @@ const Board = () => {
   const [gridX, setGridX] = useState(0);
   const [gridY, setGridY] = useState(0);
   const [activePiece, setActivePiece] = useState<HTMLElement | null>(null);
+  // const [enPassantCoords, setEnPassantCoords] = useState<[x: number, y: number]>([-1, -1]);
   const boardRef = useRef<HTMLDivElement>(null);
   const rules = new Rules();
 
@@ -69,22 +71,47 @@ const Board = () => {
           currentPiece.pieceColor,
           pieces
         );
-
         if (validMove) {
           //updates position of pieces
-          const updatedPieces = pieces.reduce((results, piece) => {
-            if (piece.file - 1 === gridX && piece.rank - 1 === gridY) {
-              piece.file = x + 1;
-              piece.rank = y + 1;
-              results.push(piece);
-            } else if (!(piece.file === x + 1 && piece.rank === y + 1)) {
-              results.push(piece);
-            }
+          if (typeof validMove !== 'boolean') {
+            const idx = pieces.indexOf(validMove);
+            console.log(pieces.slice().splice(idx, 1));
+            setPieces((piece) => {
+              const newArray = piece.slice();
+              newArray.splice(idx, 1);
+              return newArray;
+            });
+          }
 
-            return results;
-          }, [] as Pieces[]);
+          setPieces((pieces) => {
+            const activeIdx = pieces.findIndex(
+              (piece) => piece.file - 1 === gridX && piece.rank - 1 === gridY
+            );
+            console.log(activeIdx);
+            const newPiece = {
+              ...pieces[activeIdx],
+              file: x + 1,
+              rank: y + 1,
+            };
+            const newArray = pieces.slice();
+            newArray.splice(activeIdx, 1, newPiece);
+            console.log(newArray);
+            return newArray;
+          });
 
-          setPieces(updatedPieces);
+          // setPieces((pieces) =>
+          //   pieces.reduce((results, piece) => {
+          //     if (piece.file - 1 === gridX && piece.rank - 1 === gridY) {
+          //       piece.file = x + 1;
+          //       piece.rank = y + 1;
+          //       results.push(piece);
+          //     } else if (!(piece.file === x + 1 && piece.rank === y + 1)) {
+          //       results.push(piece);
+          //     }
+
+          //     return results;
+          //   }, [] as Pieces[])
+          // );
         } else {
           activePiece.style.position = 'relative';
           activePiece.style.removeProperty('top');

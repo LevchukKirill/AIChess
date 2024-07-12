@@ -1,5 +1,7 @@
 import { Pieces } from '@/components/board/Board';
 
+let enPassant: [x: number, y: number] | undefined;
+
 export default class Rules {
   isTileOccupied(x: number, y: number, tileState: Pieces[]): boolean {
     const piece = tileState.find((p) => p.file - 1 === x && p.rank - 1 === y);
@@ -30,7 +32,7 @@ export default class Rules {
     if (prevX - x === 0) oneLineXMove = true;
 
     if (prevY - y === 0) oneLineYMove = true;
-    // console.log('prev x', prevX, 'prev y', prevY, 'x', x, 'y', y, tileState);
+    console.log('prev x', prevX, 'prev y', prevY, 'x', x, 'y', y, tileState);
     if (oneLineXMove || oneLineYMove) {
       if (oneLineXMove) {
         console.log('blyaaaaaa');
@@ -109,18 +111,53 @@ export default class Rules {
     return false;
   }
 
+  isKingNear(x: number, y: number, tileState: Pieces[], color: string) {
+    const kingOp = tileState.find(
+      (p) =>
+        p.pieceType === 'K' &&
+        p.pieceColor !== color &&
+        (p.file - 1 === x + 1 || p.file - 1 === x - 1 || p.file - 1 === x) &&
+        (p.rank - 1 === y + 1 || p.rank - 1 === y - 1 || p.rank - 1 === y)
+    );
+    // const piece = tileState.find((p) => p.file - 1 === x && p.rank - 1 === y);
+
+    console.log(kingOp, x, y);
+    if (kingOp) {
+      console.log(kingOp);
+      return true;
+    } else {
+      console.log('clear');
+      return false;
+    }
+  }
+
   isTileOccupiedByOp(
     x: number,
     y: number,
     tileState: Pieces[],
-    color: string
-  ): boolean {
-    const piece = tileState.find(
-      (p) => p.file - 1 === x && p.rank - 1 === y && p.pieceColor !== color
-    );
-    if (piece) {
-      return true;
-    } else return false;
+    color: string,
+    directionPath: number = 0
+  ): Pieces | undefined {
+    const piece = tileState.find((p) => {
+      return (
+        ((p.file - 1 === x && p.rank - 1 === y) ||
+          (enPassant &&
+            enPassant[0] === x &&
+            enPassant[1] === y &&
+            p.file - 1 === enPassant[0] &&
+            p.rank - 1 + directionPath === enPassant[1])) &&
+        p.pieceColor !== color
+      );
+    });
+
+    // if (piece) {
+    //   return true;
+    // } else {
+    //   console.log(enPassant);
+    //   return false;
+    // }
+    console.log(enPassant, piece);
+    return piece;
   }
 
   isValidMove(
@@ -131,11 +168,12 @@ export default class Rules {
     type: string,
     color: string,
     tileState: Pieces[]
-  ): boolean {
+  ): Pieces | boolean {
     const moveDiffY = y - prevY;
     const moveDiffX = x - prevX;
     //Pawn movement
     if (type === 'P') {
+      // console.log(tileState);
       const specialRow = color === 'w' ? 1 : 6;
       const directionPath = color === 'w' ? 1 : -1;
 
@@ -148,23 +186,36 @@ export default class Rules {
           !this.isTileOccupied(x, y, tileState) &&
           !this.isTileOccupied(x, y - directionPath, tileState)
         ) {
+          enPassant = [x, y - directionPath];
+
           return true;
         }
       } else if (prevX === x && moveDiffY === directionPath) {
         if (!this.isTileOccupied(x, y, tileState)) {
+          enPassant = undefined;
+
           return true;
         }
-        //Bishop atack
-      } else if (moveDiffX === -1 && moveDiffY === directionPath) {
-        if (this.isTileOccupiedByOp(x, y, tileState, color)) {
-          console.log('ATACK!');
-          return true;
-        }
-      } else if (moveDiffX === 1 && moveDiffY === directionPath) {
-        if (this.isTileOccupiedByOp(x, y, tileState, color)) {
-          console.log('ATACK!');
-          return true;
-        }
+        //pawn atack
+      } else if (
+        (moveDiffX === -1 || moveDiffX === 1) &&
+        moveDiffY === directionPath
+      ) {
+        const atackedPiece = this.isTileOccupiedByOp(
+          x,
+          y,
+          tileState,
+          color,
+          directionPath
+        );
+
+        enPassant = undefined;
+        // if (atackedPiece)
+        return atackedPiece ?? false;
+        // console.log('en passant');
+        // enPassant = undefined;
+
+        // return true;
       }
     }
     //Bishop movement
@@ -174,15 +225,17 @@ export default class Rules {
           !this.isTileOccupied(x, y, tileState) &&
           !this.isPathClosed(x, y, prevX, prevY, tileState)
         ) {
+          enPassant = undefined;
           return true;
         }
         //Bishop atack
-        else if (
-          this.isTileOccupiedByOp(x, y, tileState, color) &&
-          !this.isPathClosed(x, y, prevX, prevY, tileState)
-        ) {
+        else if (!this.isPathClosed(x, y, prevX, prevY, tileState)) {
+          const atackedPiece = this.isTileOccupiedByOp(x, y, tileState, color);
+
           console.log('ATACK!');
-          return true;
+          enPassant = undefined;
+
+          return atackedPiece ?? false;
         }
       }
     //rook movement
@@ -195,14 +248,17 @@ export default class Rules {
           !this.isTileOccupied(x, y, tileState) &&
           !this.isPathClosed(x, y, prevX, prevY, tileState)
         ) {
+          enPassant = undefined;
+
           return true;
           //rook atack
-        } else if (
-          this.isTileOccupiedByOp(x, y, tileState, color) &&
-          !this.isPathClosed(x, y, prevX, prevY, tileState)
-        ) {
+        } else if (!this.isPathClosed(x, y, prevX, prevY, tileState)) {
           console.log('ATACK!');
-          return true;
+          const atackedPiece = this.isTileOccupiedByOp(x, y, tileState, color);
+
+          enPassant = undefined;
+
+          return atackedPiece ?? false;
         }
       }
     }
@@ -217,29 +273,30 @@ export default class Rules {
           !this.isTileOccupied(x, y, tileState) &&
           !this.isPathClosed(x, y, prevX, prevY, tileState)
         ) {
+          enPassant = undefined;
+
           return true;
           //rook style atack
-        } else if (
-          this.isTileOccupiedByOp(x, y, tileState, color) &&
-          !this.isPathClosed(x, y, prevX, prevY, tileState)
-        ) {
+        } else if (!this.isPathClosed(x, y, prevX, prevY, tileState)) {
+          enPassant = undefined;
+          const atackedPiece = this.isTileOccupiedByOp(x, y, tileState, color);
+
           console.log('ATACK!');
-          return true;
+          return atackedPiece ?? false;
         }
       } else if ((moveDiffY + moveDiffX) % 2 === 0) {
         //bishop like movement
-        if (
-          !this.isTileOccupied(x, y, tileState) &&
-          !this.isPathClosed(x, y, prevX, prevY, tileState)
-        ) {
+        if (!this.isPathClosed(x, y, prevX, prevY, tileState)) {
+          enPassant = undefined;
+
           return true;
           //bishop style atack
-        } else if (
-          this.isTileOccupiedByOp(x, y, tileState, color) &&
-          !this.isPathClosed(x, y, prevX, prevY, tileState)
-        ) {
+        } else if (!this.isPathClosed(x, y, prevX, prevY, tileState)) {
+          enPassant = undefined;
+
+          const atackedPiece = this.isTileOccupiedByOp(x, y, tileState, color);
           console.log('ATACK!');
-          return true;
+          return atackedPiece ?? false;
         }
       }
     }
@@ -250,11 +307,17 @@ export default class Rules {
         (Math.abs(moveDiffY) === 2 && Math.abs(moveDiffX) === 1)
       ) {
         if (!this.isTileOccupied(x, y, tileState)) {
+          enPassant = undefined;
+
           return true;
           //knight atack
-        } else if (this.isTileOccupiedByOp(x, y, tileState, color)) {
+        } else {
           console.log('ATACK!');
-          return true;
+          enPassant = undefined;
+
+          const atackedPiece = this.isTileOccupiedByOp(x, y, tileState, color);
+
+          return atackedPiece ?? false;
         }
       }
     }
@@ -264,12 +327,21 @@ export default class Rules {
         (Math.abs(moveDiffX) === 1 && Math.abs(moveDiffY) <= 1) ||
         (Math.abs(moveDiffY) === 1 && Math.abs(moveDiffX) <= 1)
       ) {
-        if (!this.isTileOccupied(x, y, tileState)) {
+        if (
+          !this.isTileOccupied(x, y, tileState) &&
+          !this.isKingNear(x, y, tileState, color)
+        ) {
+          enPassant = undefined;
+
           return true;
           //king atack
-        } else if (this.isTileOccupiedByOp(x, y, tileState, color)) {
+        } else if (!this.isKingNear(x, y, tileState, color)) {
           console.log('ATACK!');
-          return true;
+          enPassant = undefined;
+
+          const atackedPiece = this.isTileOccupiedByOp(x, y, tileState, color);
+
+          return atackedPiece ?? false;
         }
       }
     }

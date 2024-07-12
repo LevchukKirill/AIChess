@@ -3,6 +3,7 @@ interface Piece {
   rank: number;
   pieceColor: string;
   pieceType: string;
+  enPassant: string;
 }
 
 export default function parserFEN(fen: string) {
@@ -13,6 +14,8 @@ export default function parserFEN(fen: string) {
     rank = 8;
 
   let allowColorToMove = fen.split(' ')[1];
+  let enPassant = fen.split(' ')[3];
+  // if (fen.split(' ')[3] !== '-') enPassant = true;
 
   for (let i = 0; i < fenBoard.length; i++) {
     let pieceColor = 'None';
@@ -32,7 +35,7 @@ export default function parserFEN(fen: string) {
       }
     }
     if (pieceColor != 'None') {
-      Pieces.push({ file, rank, pieceColor, pieceType });
+      Pieces.push({ file, rank, pieceColor, pieceType, enPassant });
     }
   }
   return Pieces;
