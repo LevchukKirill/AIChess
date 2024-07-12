@@ -1,22 +1,20 @@
-"use client";
-import React, { useRef, useState } from "react";
-import styles from "./board.module.css";
-import parserFEN from "@/scripts/fenParser";
-import Rules from "@/scripts/rules";
+'use client';
+import React, { useRef, useState } from 'react';
+import styles from './board.module.css';
+import parserFEN from '@/scripts/fenParser';
+import Rules from '@/scripts/rules';
 
 export interface Pieces {
-  file: Number;
-  rank: Number;
-  pieceColor: String;
-  pieceType: String;
+  file: number;
+  rank: number;
+  pieceColor: string;
+  pieceType: string;
 }
 
-const verticalAxis = ["1", "2", "3", "4", "5", "6", "7", "8"];
-const horizontalAxis = ["a", "b", "c", "d", "e", "f", "g", "h"];
-const startFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 1 0";
-// const startFEN = '8/8/8/7r/6Pp/8/8/5k1K b - g3 0 1';
-
-// const piecesPos: Array<Pieces> = parserFEN(startFEN);
+const verticalAxis = ['1', '2', '3', '4', '5', '6', '7', '8'];
+const horizontalAxis = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+const startFEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 1 0';
+// const startFEN = '1qrk4/1b6/4K3/1P6/8/8/Q7/8 w - - 0 1';
 
 const Board = () => {
   const [pieces, setPieces] = useState<Pieces[]>(parserFEN(startFEN));
@@ -35,13 +33,12 @@ const Board = () => {
       const gridY = Math.abs(
         Math.ceil((e.clientY - board.offsetTop - 800) / 100)
       );
-      // console.log(e);
       setGridX(gridX);
       setGridY(gridY);
       const x = e.clientX - 50;
       const y = e.clientY - 50;
 
-      element.style.position = "absolute";
+      element.style.position = 'absolute';
       element.style.left = `${x}px`;
       element.style.top = `${y}px`;
 
@@ -56,13 +53,13 @@ const Board = () => {
       const y = Math.abs(Math.ceil((e.clientY - board.offsetTop - 800) / 100));
 
       const currentPiece = pieces.find(
-        (p) => Number(p.file) - 1 === gridX && Number(p.rank) - 1 === gridY
+        (p) => p.file - 1 === gridX && p.rank - 1 === gridY
       );
       const attackedPiece = pieces.find(
-        (p) => Number(p.file) - 1 === x && Number(p.rank) - 1 === y
+        (p) => p.file - 1 === x && p.rank - 1 === y
       );
-
       if (currentPiece) {
+        console.log(currentPiece, x, y);
         const validMove = rules.isValidMove(
           gridX,
           gridY,
@@ -74,11 +71,9 @@ const Board = () => {
         );
 
         if (validMove) {
+          //updates position of pieces
           const updatedPieces = pieces.reduce((results, piece) => {
-            if (
-              Number(piece.file) - 1 === gridX &&
-              Number(piece.rank) - 1 === gridY
-            ) {
+            if (piece.file - 1 === gridX && piece.rank - 1 === gridY) {
               piece.file = x + 1;
               piece.rank = y + 1;
               results.push(piece);
@@ -90,60 +85,13 @@ const Board = () => {
           }, [] as Pieces[]);
 
           setPieces(updatedPieces);
-
-          // setPieces((value) => {
-          //   const pieces = value.reduce((results, piece) => {
-          //     if (
-          //       piece.file === currentPiece.file &&
-          //       piece.rank === currentPiece.rank
-          //     ) {
-          //       piece.file = x + 1;
-          //       piece.rank = y + 1;
-          //       results.push(piece);
-          //     } else if (!(piece.file === x + 1 && piece.rank === y + 1)) {
-          //       results.push(piece);
-          //     }
-
-          //     return results;
-          //   }, [] as Pieces[]);
-
-          //   return pieces;
-          // });
         } else {
-          activePiece.style.position = "relative";
-          activePiece.style.removeProperty("top");
-          activePiece.style.removeProperty("left");
+          activePiece.style.position = 'relative';
+          activePiece.style.removeProperty('top');
+          activePiece.style.removeProperty('left');
         }
       }
       console.log(currentPiece, attackedPiece);
-      //updates position of pieces
-      // setPieces((value) => {
-      //   const pieces = value.map((p) => {
-      //     if (Number(p.file) - 1 === gridX && Number(p.rank) - 1 === gridY) {
-      //       const validMove = rules.isValidMove(
-      //         gridX,
-      //         gridY,
-      //         x,
-      //         y,
-      //         p.pieceType,
-      //         p.pieceColor,
-      //         value
-      //       );
-
-      //       if (validMove) {
-      //         p.file = x + 1;
-      //         p.rank = y + 1;
-      //       } else {
-      //         activePiece.style.position = 'relative';
-      //         activePiece.style.removeProperty('top');
-      //         activePiece.style.removeProperty('left');
-      //       }
-      //     }
-      //     return p;
-      //   });
-
-      //   return pieces;
-      // });
 
       setActivePiece(null);
     }
@@ -151,7 +99,6 @@ const Board = () => {
 
   function movePiece(e: React.MouseEvent) {
     const board = boardRef.current;
-    // console.log(board);
     if (activePiece && board) {
       const x = e.clientX - 50;
       const y = e.clientY - 50;
@@ -160,7 +107,7 @@ const Board = () => {
       const maxX = board.offsetLeft + board.clientWidth - 73;
       const maxY = board.offsetTop + board.clientHeight - 82;
 
-      activePiece.style.position = "absolute";
+      activePiece.style.position = 'absolute';
 
       if (x < minX) activePiece.style.left = `${minX}px`;
       else if (x > maxX) activePiece.style.left = `${maxX}px`;
@@ -180,21 +127,7 @@ const Board = () => {
       let skipFlag = false;
 
       pieces.map((piece) => {
-        if (
-          numbers % 2 === 0 &&
-          Number(piece.file) - 1 === i &&
-          Number(piece.rank) - 1 === j
-        ) {
-          // console.log(pieces);
-          // setPieces([
-          //   ...pieces,
-          //   {
-          //     file: i,
-          //     rank: j,
-          //     pieceColor: piece.pieceColor,
-          //     pieceType: piece.pieceType,
-          //   },
-          // ]);
+        if (numbers % 2 === 0 && piece.file - 1 === i && piece.rank - 1 === j) {
           skipFlag = true;
           board.push(
             <div
@@ -210,22 +143,8 @@ const Board = () => {
             </div>
           );
         }
-        if (
-          numbers % 2 !== 0 &&
-          Number(piece.file) - 1 === i &&
-          Number(piece.rank) - 1 === j
-        ) {
-          // console.log(i, j);
+        if (numbers % 2 !== 0 && piece.file - 1 === i && piece.rank - 1 === j) {
           skipFlag = true;
-          // setPieces([
-          //   ...pieces,
-          //   {
-          //     file: i,
-          //     rank: j,
-          //     pieceColor: piece.pieceColor,
-          //     pieceType: piece.pieceType,
-          //   },
-          // ]);
           board.push(
             <div
               key={`[${horizontalAxis[i]},${verticalAxis[j]}]`}
@@ -261,7 +180,6 @@ const Board = () => {
           </div>
         );
       }
-      // console.log(pieces);
     }
   }
   return (

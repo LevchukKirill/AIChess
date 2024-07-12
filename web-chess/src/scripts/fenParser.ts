@@ -1,8 +1,8 @@
 interface Piece {
-  file: Number;
-  rank: Number;
-  pieceColor: String;
-  pieceType: String;
+  file: number;
+  rank: number;
+  pieceColor: string;
+  pieceType: string;
 }
 
 export default function parserFEN(fen: string) {
