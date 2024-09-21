@@ -3,14 +3,15 @@ import React, { useRef, useState } from 'react';
 import styles from './board.module.css';
 import parserFEN from '@/scripts/fenParser';
 import Rules from '@/scripts/rules';
+import {Pieces} from "@/scripts/piece";
 
-export interface Pieces {
-  file: number;
-  rank: number;
-  pieceColor: string;
-  pieceType: string;
-  enPassant: string;
-}
+// export interface Pieces {
+//   file: number;
+//   rank: number;
+//   pieceColor: string;
+//   pieceType: string;
+//   enPassant: string;
+// }
 
 const verticalAxis = ['1', '2', '3', '4', '5', '6', '7', '8'];
 const horizontalAxis = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
