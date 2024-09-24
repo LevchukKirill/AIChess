@@ -1,30 +1,21 @@
 import Piece, { Pieces } from "@/scripts/piece";
 
 export default class Pawn extends Piece {
-  prevX: number = 0;
-  prevY: number = 0;
-  constructor(
-    prevX: number,
-    prevY: number,
-    x: number,
-    y: number,
-    type: string,
-    color: string,
-    tileState: Pieces[],
-  ) {
-    super(x, y, type, color, tileState);
-
-    this.prevX = prevX;
-    this.prevY = prevY;
+  constructor(x: number, y: number, type: string, color: string) {
+    super(x, y, type, color);
+    this.file = x;
+    this.rank = y;
+    this.pieceColor = color;
+    this.pieceType = type;
   }
   possibleMove(
     prevX: number,
     prevY: number,
-    x: number,
-    y: number,
-    type: string,
-    color: string,
     tileState: Pieces[],
+    x: number = this.file,
+    y: number = this.rank,
+    type: string = this.pieceType,
+    color: string = this.pieceColor,
   ): Pieces | undefined | boolean {
     const moveDiffY = y - prevY;
     const moveDiffX = x - prevX;

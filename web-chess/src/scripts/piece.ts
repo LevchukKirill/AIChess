@@ -13,19 +13,19 @@ export default class Piece {
   rank: number;
   pieceColor: string;
   pieceType: string;
-  tileState: Pieces[];
+  // tileState: Pieces[];
   constructor(
     file: number,
     rank: number,
     pieceColor: string,
     pieceType: string,
-    tileState: Pieces[],
+    // tileState: Pieces[],
   ) {
     this.file = file;
     this.rank = rank;
     this.pieceColor = pieceColor;
     this.pieceType = pieceType;
-    this.tileState = tileState;
+    // this.tileState = tileState;
   }
 
   isTileOccupied(x: number, y: number, tileState: Pieces[]): boolean {
