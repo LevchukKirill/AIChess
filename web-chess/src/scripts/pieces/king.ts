@@ -47,7 +47,7 @@ export default class King extends Piece {
       (Math.abs(moveDiffY) === 1 && Math.abs(moveDiffX) <= 1)
     ) {
       if (
-        !this.isTileOccupied(x, y, tileState) &&
+        !super.isTileOccupied(x, y, tileState) &&
         !this.isKingNear(x, y, tileState, color)
       ) {
         enPassant = undefined;
@@ -58,7 +58,7 @@ export default class King extends Piece {
         console.log("ATACK!");
         enPassant = undefined;
 
-        const atackedPiece = this.isTileOccupiedByOp(x, y, tileState, color);
+        const atackedPiece = super.isTileOccupiedByOp(x, y, tileState, color);
 
         return atackedPiece ?? false;
       }

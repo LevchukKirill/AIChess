@@ -26,32 +26,37 @@ export default class Queen extends Piece {
       (moveDiffY !== 0 && moveDiffX === 0)
     ) {
       if (
-        !this.isTileOccupied(x, y, tileState) &&
-        !this.isPathClosed(x, y, prevX, prevY, tileState)
+        !super.isTileOccupied(x, y, tileState) &&
+        !super.isPathClosed(x, y, prevX, prevY, tileState)
       ) {
         enPassant = undefined;
 
         return true;
         //rook style atack
-      } else if (!this.isPathClosed(x, y, prevX, prevY, tileState)) {
+      } else if (!super.isPathClosed(x, y, prevX, prevY, tileState)) {
         enPassant = undefined;
-        const atackedPiece = this.isTileOccupiedByOp(x, y, tileState, color);
+        const atackedPiece = super.isTileOccupiedByOp(x, y, tileState, color);
 
         console.log("ATACK!");
         return atackedPiece ?? false;
       }
-    } else if ((moveDiffY + moveDiffX) % 2 === 0) {
+    } else if (Math.abs(moveDiffY) === Math.abs(moveDiffX)) {
       //bishop like movement
-      if (!this.isPathClosed(x, y, prevX, prevY, tileState)) {
-        enPassant = undefined;
 
+      if (
+        !super.isTileOccupied(x, y, tileState) &&
+        !super.isPathClosed(x, y, prevX, prevY, tileState)
+      ) {
+        enPassant = undefined;
         return true;
-        //bishop style atack
-      } else if (!this.isPathClosed(x, y, prevX, prevY, tileState)) {
-        enPassant = undefined;
 
-        const atackedPiece = this.isTileOccupiedByOp(x, y, tileState, color);
-        console.log("ATACK!");
+        //bishop style atac
+      } else if (!super.isPathClosed(x, y, prevX, prevY, tileState)) {
+        enPassant = undefined;
+        const atackedPiece = super.isTileOccupiedByOp(x, y, tileState, color);
+
+        console.log("ATACK lk bishop!");
+
         return atackedPiece ?? false;
       }
     }

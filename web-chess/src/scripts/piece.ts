@@ -53,7 +53,7 @@ export default class Piece {
         p.pieceColor !== color
       );
     });
-    console.log(enPassant, piece);
+    // console.log(enPassant, piece);
     return piece;
   }
   isPathClosed(

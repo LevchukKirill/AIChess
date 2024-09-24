@@ -25,16 +25,16 @@ export default class Rook extends Piece {
       (moveDiffY !== 0 && moveDiffX === 0)
     ) {
       if (
-        !this.isTileOccupied(x, y, tileState) &&
-        !this.isPathClosed(x, y, prevX, prevY, tileState)
+        !super.isTileOccupied(x, y, tileState) &&
+        !super.isPathClosed(x, y, prevX, prevY, tileState)
       ) {
         enPassant = undefined;
 
         return true;
         //rook atack
-      } else if (!this.isPathClosed(x, y, prevX, prevY, tileState)) {
+      } else if (!super.isPathClosed(x, y, prevX, prevY, tileState)) {
         console.log("ATACK!");
-        const atackedPiece = this.isTileOccupiedByOp(x, y, tileState, color);
+        const atackedPiece = super.isTileOccupiedByOp(x, y, tileState, color);
 
         enPassant = undefined;
 

@@ -24,7 +24,7 @@ export default class Knight extends Piece {
       (Math.abs(moveDiffX) === 2 && Math.abs(moveDiffY) === 1) ||
       (Math.abs(moveDiffY) === 2 && Math.abs(moveDiffX) === 1)
     ) {
-      if (!this.isTileOccupied(x, y, tileState)) {
+      if (!super.isTileOccupied(x, y, tileState)) {
         enPassant = undefined;
 
         return true;
@@ -33,7 +33,7 @@ export default class Knight extends Piece {
         console.log("ATACK!");
         enPassant = undefined;
 
-        const atackedPiece = this.isTileOccupiedByOp(x, y, tileState, color);
+        const atackedPiece = super.isTileOccupiedByOp(x, y, tileState, color);
 
         return atackedPiece ?? false;
       }

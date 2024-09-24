@@ -20,19 +20,21 @@ export default class Bishop extends Piece {
     const moveDiffY = y - prevY;
     const moveDiffX = x - prevX;
     let enPassant;
-    if ((moveDiffY + moveDiffX) % 2 === 0) {
+    if (Math.abs(moveDiffY) === Math.abs(moveDiffX)) {
       if (
-        !this.isTileOccupied(x, y, tileState) &&
-        !this.isPathClosed(x, y, prevX, prevY, tileState)
+        !super.isTileOccupied(x, y, tileState) &&
+        !super.isPathClosed(x, y, prevX, prevY, tileState)
       ) {
+        console.log("bishop move xd");
         enPassant = undefined;
         return true;
       }
-      //Bishop atack
-      else if (!this.isPathClosed(x, y, prevX, prevY, tileState)) {
-        const atackedPiece = this.isTileOccupiedByOp(x, y, tileState, color);
 
-        console.log("ATACK!");
+      //Bishop atack
+      else if (!super.isPathClosed(x, y, prevX, prevY, tileState)) {
+        const atackedPiece = super.isTileOccupiedByOp(x, y, tileState, color);
+
+        console.log("ATACK lk bishop!");
         enPassant = undefined;
 
         return atackedPiece ?? false;

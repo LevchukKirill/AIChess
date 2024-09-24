@@ -1,9 +1,9 @@
-'use client';
-import React, { useRef, useState } from 'react';
-import styles from './board.module.css';
-import parserFEN from '@/scripts/fenParser';
-import Rules from '@/scripts/rules';
-import {Pieces} from "@/scripts/piece";
+"use client";
+import React, { useRef, useState } from "react";
+import styles from "./board.module.css";
+import parserFEN from "@/scripts/fenParser";
+import Rules from "@/scripts/rules";
+import { Pieces } from "@/scripts/piece";
 
 // export interface Pieces {
 //   file: number;
@@ -13,9 +13,9 @@ import {Pieces} from "@/scripts/piece";
 //   enPassant: string;
 // }
 
-const verticalAxis = ['1', '2', '3', '4', '5', '6', '7', '8'];
-const horizontalAxis = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
-const startFEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 1 0';
+const verticalAxis = ["1", "2", "3", "4", "5", "6", "7", "8"];
+const horizontalAxis = ["a", "b", "c", "d", "e", "f", "g", "h"];
+const startFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 1 0";
 // const startFEN = '1qrk4/1b6/4K3/1P6/8/8/Q7/8 w - - 0 1';
 
 const Board = () => {
@@ -34,14 +34,14 @@ const Board = () => {
     if (board && element.classList.contains(styles.chess_piece)) {
       const gridX = Math.floor((e.clientX - board.offsetLeft) / 100);
       const gridY = Math.abs(
-        Math.ceil((e.clientY - board.offsetTop - 800) / 100)
+        Math.ceil((e.clientY - board.offsetTop - 800) / 100),
       );
       setGridX(gridX);
       setGridY(gridY);
       const x = e.clientX - 50;
       const y = e.clientY - 50;
 
-      element.style.position = 'absolute';
+      element.style.position = "absolute";
       element.style.left = `${x}px`;
       element.style.top = `${y}px`;
 
@@ -56,10 +56,10 @@ const Board = () => {
       const y = Math.abs(Math.ceil((e.clientY - board.offsetTop - 800) / 100));
 
       const currentPiece = pieces.find(
-        (p) => p.file - 1 === gridX && p.rank - 1 === gridY
+        (p) => p.file - 1 === gridX && p.rank - 1 === gridY,
       );
       const attackedPiece = pieces.find(
-        (p) => p.file - 1 === x && p.rank - 1 === y
+        (p) => p.file - 1 === x && p.rank - 1 === y,
       );
       if (currentPiece) {
         console.log(currentPiece, x, y);
@@ -70,11 +70,11 @@ const Board = () => {
           y,
           currentPiece.pieceType,
           currentPiece.pieceColor,
-          pieces
+          pieces,
         );
         if (validMove) {
           //updates position of pieces
-          if (typeof validMove !== 'boolean') {
+          if (typeof validMove !== "boolean") {
             const idx = pieces.indexOf(validMove);
             console.log(pieces.slice().splice(idx, 1));
             setPieces((piece) => {
@@ -86,9 +86,9 @@ const Board = () => {
 
           setPieces((pieces) => {
             const activeIdx = pieces.findIndex(
-              (piece) => piece.file - 1 === gridX && piece.rank - 1 === gridY
+              (piece) => piece.file - 1 === gridX && piece.rank - 1 === gridY,
             );
-            console.log(activeIdx);
+            // console.log(activeIdx);
             const newPiece = {
               ...pieces[activeIdx],
               file: x + 1,
@@ -96,7 +96,7 @@ const Board = () => {
             };
             const newArray = pieces.slice();
             newArray.splice(activeIdx, 1, newPiece);
-            console.log(newArray);
+            // console.log(newArray);
             return newArray;
           });
 
@@ -114,9 +114,9 @@ const Board = () => {
           //   }, [] as Pieces[])
           // );
         } else {
-          activePiece.style.position = 'relative';
-          activePiece.style.removeProperty('top');
-          activePiece.style.removeProperty('left');
+          activePiece.style.position = "relative";
+          activePiece.style.removeProperty("top");
+          activePiece.style.removeProperty("left");
         }
       }
       console.log(currentPiece, attackedPiece);
@@ -135,7 +135,7 @@ const Board = () => {
       const maxX = board.offsetLeft + board.clientWidth - 73;
       const maxY = board.offsetTop + board.clientHeight - 82;
 
-      activePiece.style.position = 'absolute';
+      activePiece.style.position = "absolute";
 
       if (x < minX) activePiece.style.left = `${minX}px`;
       else if (x > maxX) activePiece.style.left = `${maxX}px`;
@@ -168,7 +168,7 @@ const Board = () => {
                 }}
                 className={styles.chess_piece}
               ></div>
-            </div>
+            </div>,
           );
         }
         if (numbers % 2 !== 0 && piece.file - 1 === i && piece.rank - 1 === j) {
@@ -184,7 +184,7 @@ const Board = () => {
                 }}
                 className={styles.chess_piece}
               ></div>
-            </div>
+            </div>,
           );
         }
       });
@@ -196,7 +196,7 @@ const Board = () => {
             className={`${styles.tile}, ${styles.black}`}
           >
             {/* [{horizontalAxis[i]},{verticalAxis[j]}] */}
-          </div>
+          </div>,
         );
       } else if (numbers % 2 !== 0 && !skipFlag) {
         board.push(
@@ -205,7 +205,7 @@ const Board = () => {
             className={`${styles.tile}, ${styles.white}`}
           >
             {/* [{horizontalAxis[i]},{verticalAxis[j]}] */}
-          </div>
+          </div>,
         );
       }
     }
